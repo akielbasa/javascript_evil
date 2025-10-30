@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My LittleJS Game</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+<div id="gameContainer">
+    <div id="player"></div>
+
+    <!-- Victory Screen -->
+    <div id="victoryScreen">
+        <div id="victoryTitle">VICTORY!</div>
+        <div id="victoryStats">
+            <div id="finalVictoryStats">You defeated all the zombies!</div>
+            <div>Congratulations, brave warrior!</div>
+            <div>You have saved the day!</div>
+        </div>
+        <button id="continueButton">PLAY AGAIN</button>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="gameOverScreen">
+        <div id="gameOverTitle">GAME OVER</div>
+        <div id="gameOverStats">
+            <div id="finalStats">You survived for a while!</div>
+            <div>Zombies are tough, but you can get tougher!</div>
+            <div>Try collecting health potions to survive longer.</div>
+        </div>
+        <button id="restartButton">RESTART GAME</button>
+    </div>
+
+    <!-- UI Elements -->
+    <div id="ui">
+        <div>Use WASD or Arrow Keys to move</div>
+        <div><strong>Q - Attack (300 damage)</strong></div>
+        <div id="position">Player pos: 0, 0</div>
+        <div id="speed">Speed: 300 (100%)</div>
+    </div>
+
+    <!-- Combined Inventory and Health UI - Top Right -->
+    <div id="inventoryUI">
+        <!-- Health Bar -->
+        <div id="healthContainer">
+            <div id="healthLabel">Health</div>
+            <div id="healthBar">
+                <div id="healthFill"></div>
+            </div>
+        </div>
+
+        <!-- Inventory -->
+        <div id="inventoryLabel">Inventory</div>
+        <div id="inventorySlots">
+            <div class="inventory-slot empty" data-key="1"></div>
+            <div class="inventory-slot empty" data-key="2"></div>
+            <div class="inventory-slot empty" data-key="3"></div>
+        </div>
+    </div>
+
+    <div id="controls">
+        <div>Walk over items to pick up</div>
+        <div>Q - Attack zombies (300 damage)</div>
+        <div>1, 2, 3 - Use inventory items</div>
+    </div>
+</div>
+
+<!-- Hidden Templates -->
+<div id="templates">
+    <div class="health-item-template item-template">+</div>
+</div>
+
+<!-- LittleJS Engine -->
+<script src="https://cdn.jsdelivr.net/npm/littlejsengine@1.14.19/dist/littlejs.min.js"></script>
+
+<!-- Game Scripts - ORDER MATTERS! -->
+<script src="scripts/config.js"></script>
+<script src="scripts/base-item.js"></script>
+<script src="scripts/health-item.js"></script>
+<script src="scripts/item-manager.js"></script>
+<script src="scripts/inventory.js"></script>
+<script src="scripts/base-enemy.js"></script>
+<script src="scripts/zombie-enemy.js"></script>
+<script src="scripts/enemy-manager.js"></script>
+<script src="scripts/player.js"></script>
+<script src="scripts/game.js"></script>
+</body>
+</html>
