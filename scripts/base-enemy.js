@@ -49,11 +49,25 @@ class BaseEnemy {
 
     canDamagePlayer() {
         const currentTime = Date.now();
-        return currentTime - this.lastDamageTime >= this.damageCooldown;
+        const canDamage = currentTime - this.lastDamageTime >= this.damageCooldown;
+
+        if (!canDamage) {
+            // Debug: Show remaining cooldown
+            const remainingCooldown = ((this.damageCooldown - (currentTime - this.lastDamageTime)) / 1000).toFixed(1);
+            console.log(`${this.config.NAME} ${this.id} on cooldown: ${remainingCooldown}s remaining`);
+        }
+
+        return canDamage;
     }
 
     damagePlayer(player) {
         if (this.destroyed || !this.canDamagePlayer()) return false;
+
+        // Check if player is invulnerable (during attack)
+        if (player.isInvulnerable) {
+            console.log(`${this.config.NAME} ${this.id} attack blocked - player is invulnerable!`);
+            return false;
+        }
 
         // Deal damage to player
         player.takeDamage(this.damage);

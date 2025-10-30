@@ -5,11 +5,11 @@ class ZombieEnemy extends BaseEnemy {
     static CONFIG = {
         SIZE: 32,
         HEALTH: 1000,
-        DAMAGE: 50,
+        DAMAGE: 40,
         COLLISION_DISTANCE: 40,
         DAMAGE_COOLDOWN: 2000, // 2 seconds between attacks
-        SPEED: 0, // Currently no movement (will be added later)
-        CAN_MOVE: false, // Will be true when we add movement
+        SPEED: 100, // 1/3 of player base speed (300 / 3 = 100)
+        CAN_MOVE: true, // Zombies can now move
         NAME: 'Zombie',
         TYPE: 'zombie',
         COLOR_PRIMARY: '#FF6666',
@@ -39,9 +39,37 @@ class ZombieEnemy extends BaseEnemy {
     }
 
     updateMovement() {
-        // For now, zombies don't move
-        // This will be implemented later when we add movement
-        // Future: Slow movement toward player
+        // Get player reference from global game state
+        if (typeof window.getPlayerPosition === 'function') {
+            const playerPos = window.getPlayerPosition();
+
+            if (playerPos) {
+                // Calculate direction to player
+                const direction = this.getDirectionTo(playerPos.x, playerPos.y);
+
+                // Calculate distance to player
+                const distance = Math.sqrt(
+                    Math.pow(playerPos.x - this.x, 2) +
+                    Math.pow(playerPos.y - this.y, 2)
+                );
+
+                // Only move if not too close (to avoid jittering at collision distance)
+                if (distance > this.collisionDistance + 5) {
+                    // Move towards player using timeDelta for smooth movement
+                    const moveSpeed = this.speed * timeDelta;
+
+                    const newX = this.x + (direction.x * moveSpeed);
+                    const newY = this.y + (direction.y * moveSpeed);
+
+                    // Keep within game bounds
+                    const clampedX = Math.max(16, Math.min(GAME_CONFIG.WIDTH - 16, newX));
+                    const clampedY = Math.max(16, Math.min(GAME_CONFIG.HEIGHT - 16, newY));
+
+                    // Update position
+                    this.moveTo(clampedX, clampedY);
+                }
+            }
+        }
     }
 
     // Zombie-specific behavior when taking damage
@@ -50,8 +78,7 @@ class ZombieEnemy extends BaseEnemy {
 
         // Zombies are tanky - maybe add special effects for high damage resistance
         if (actualDamage > 0 && !this.destroyed) {
-            // Could add zombie-specific hurt sounds or effects here
-            console.log(`Zombie ${this.id} shrugs off ${actualDamage} damage! Still has ${this.health} HP.`);
+            console.log(`Zombie ${this.id} took ${actualDamage} damage! Remaining: ${this.health}/${this.maxHealth} HP`);
         }
 
         return actualDamage;
@@ -62,9 +89,7 @@ class ZombieEnemy extends BaseEnemy {
         const didDamage = super.damagePlayer(player);
 
         if (didDamage) {
-            // Add zombie-specific attack effects
             console.log(`Zombie ${this.id} shambles and attacks!`);
-            // Future: Add zombie attack sound/animation
         }
 
         return didDamage;

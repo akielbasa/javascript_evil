@@ -1,0 +1,62 @@
+/* Player Styles */
+#player {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    background-image: url('../sprites/player_r.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: filter 0.3s ease;
+}
+
+/* Player Attack Animation */
+#player.attacking {
+    animation: attackNudge 0.3s ease-out;
+    filter: brightness(1.5) drop-shadow(2px 0 4px rgba(255, 255, 0, 0.8)) !important;
+}
+
+@keyframes attackNudge {
+    0% {
+        transform: translateX(0px) scale(1.0);
+    }
+    50% {
+        transform: translateX(8px) scale(1.1);
+    }
+    100% {
+        transform: translateX(0px) scale(1.0);
+    }
+}
+
+/* Player Death Animation */
+#player.dying {
+    animation: playerDeath 1s ease-out forwards;
+}
+
+@keyframes playerDeath {
+    0% {
+        transform: scale(1.0) rotate(0deg);
+        opacity: 1.0;
+        filter: brightness(1.0);
+    }
+    25% {
+        transform: scale(1.2) rotate(90deg);
+        filter: brightness(2.0) hue-rotate(0deg);
+    }
+    50% {
+        transform: scale(1.1) rotate(180deg);
+        opacity: 0.8;
+        filter: brightness(1.5) hue-rotate(180deg);
+    }
+    75% {
+        transform: scale(0.8) rotate(270deg);
+        opacity: 0.4;
+        filter: brightness(0.5) hue-rotate(360deg);
+    }
+    100% {
+        transform: scale(0.1) rotate(360deg);
+        opacity: 0.0;
+        filter: brightness(0.1);
+    }
+}

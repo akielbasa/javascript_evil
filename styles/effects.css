@@ -1,0 +1,85 @@
+/* Game Container Effects */
+
+/* Healing Animation */
+#gameContainer.healing-effect {
+    border-color: #00FF00;
+    box-shadow: 
+        0 0 20px rgba(0, 255, 0, 0.8),
+        inset 0 0 20px rgba(0, 255, 0, 0.3);
+    animation: healingPulse 0.5s ease-out;
+}
+
+@keyframes healingPulse {
+    0% {
+        border-color: #444;
+        box-shadow: none;
+    }
+    20% {
+        border-color: #00FF00;
+        box-shadow: 
+            0 0 30px rgba(0, 255, 0, 1.0),
+            inset 0 0 30px rgba(0, 255, 0, 0.5);
+    }
+    100% {
+        border-color: #00FF00;
+        box-shadow: 
+            0 0 20px rgba(0, 255, 0, 0.8),
+            inset 0 0 20px rgba(0, 255, 0, 0.3);
+    }
+}
+
+/* Damage Effect Animation */
+#gameContainer.damage-effect {
+    border-color: #FF0000;
+    box-shadow: 
+        0 0 25px rgba(255, 0, 0, 0.9),
+        inset 0 0 25px rgba(255, 0, 0, 0.4);
+    animation: damagePulse 0.4s ease-out;
+}
+
+@keyframes damagePulse {
+    0% {
+        border-color: #444;
+        box-shadow: none;
+    }
+    30% {
+        border-color: #FF0000;
+        box-shadow: 
+            0 0 35px rgba(255, 0, 0, 1.0),
+            inset 0 0 35px rgba(255, 0, 0, 0.6);
+    }
+    100% {
+        border-color: #FF0000;
+        box-shadow: 
+            0 0 25px rgba(255, 0, 0, 0.9),
+            inset 0 0 25px rgba(255, 0, 0, 0.4);
+    }
+}
+
+/* Death Effect for Game Container */
+#gameContainer.player-dead {
+    border-color: #FF0000;
+    box-shadow: 
+        0 0 30px rgba(255, 0, 0, 0.8),
+        inset 0 0 30px rgba(255, 0, 0, 0.3);
+    animation: deathPulse 2s ease-out;
+}
+
+@keyframes deathPulse {
+    0% {
+        border-color: #444;
+        box-shadow: none;
+    }
+    10% {
+        border-color: #FF0000;
+        box-shadow: 
+            0 0 40px rgba(255, 0, 0, 1.0),
+            inset 0 0 40px rgba(255, 0, 0, 0.5);
+    }
+    100% {
+        border-color: #660000;
+        box-shadow: 
+            0 0 20px rgba(255, 0, 0, 0.6),
+            inset 0 0 20px rgba(255, 0, 0, 0.2);
+    }
+}

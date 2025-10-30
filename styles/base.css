@@ -1,0 +1,30 @@
+/* Base Styles and Layout */
+body {
+    margin: 0;
+    padding: 0;
+    background: #222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+#gameContainer {
+    position: relative;
+    width: 1200px;
+    height: 800px;
+    background: #111;
+    border: 2px solid #444;
+    overflow: hidden;
+    transition: border-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+/* Hidden templates container */
+#templates {
+    display: none !important;
+}
+
+.item-template {
+    display: none !important;
+}

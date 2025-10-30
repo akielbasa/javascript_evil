@@ -1,0 +1,137 @@
+/* Victory Screen */
+#victoryScreen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 50, 0, 0.95);
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.5s ease-out;
+}
+
+#victoryScreen.visible {
+    display: flex;
+}
+
+#victoryTitle {
+    font-size: 48px;
+    color: #00FF44;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    margin-bottom: 20px;
+    animation: victoryPulse 2s ease-in-out infinite;
+}
+
+@keyframes victoryPulse {
+    0%, 100% {
+        transform: scale(1.0);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    }
+    50% {
+        transform: scale(1.1);
+        text-shadow: 0 0 20px rgba(0, 255, 68, 0.8);
+    }
+}
+
+/* Game Over Screen */
+#gameOverScreen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+#gameOverScreen.visible {
+    display: flex;
+}
+
+#gameOverTitle {
+    font-size: 48px;
+    color: #FF4444;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    margin-bottom: 20px;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1.0);
+        opacity: 1.0;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+#gameOverStats, #victoryStats {
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+#gameOverStats div, #victoryStats div {
+    margin-bottom: 8px;
+}
+
+#restartButton, #continueButton {
+    padding: 15px 30px;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(135deg, #FF6666 0%, #FF4444 100%);
+    border: 2px solid #FF0000;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#continueButton {
+    background: linear-gradient(135deg, #44AA44 0%, #22AA22 100%);
+    border-color: #00AA00;
+}
+
+#restartButton:hover, #continueButton:hover {
+    transform: scale(1.05);
+}
+
+#restartButton:hover {
+    background: linear-gradient(135deg, #FF8888 0%, #FF6666 100%);
+    box-shadow: 0 0 20px rgba(255, 68, 68, 0.6);
+}
+
+#continueButton:hover {
+    background: linear-gradient(135deg, #66BB66 0%, #44BB44 100%);
+    box-shadow: 0 0 20px rgba(68, 170, 68, 0.6);
+}
+
+#restartButton:active, #continueButton:active {
+    transform: scale(0.95);
+}

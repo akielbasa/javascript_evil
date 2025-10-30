@@ -1,8 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Javascript Evil</title>
-    <link rel="stylesheet" href="styles/main.css">
+    <title>My LittleJS Game</title>
+    <!-- Modular CSS Files -->
+    <link rel="stylesheet" href="styles/base.css">
+    <link rel="stylesheet" href="styles/player.css">
+    <link rel="stylesheet" href="styles/enemies.css">
+    <link rel="stylesheet" href="styles/items.css">
+    <link rel="stylesheet" href="styles/ui.css">
+    <link rel="stylesheet" href="styles/inventory.css">
+    <link rel="stylesheet" href="styles/effects.css">
+    <link rel="stylesheet" href="styles/screens.css">
 </head>
 <body>
 <div id="gameContainer">
@@ -48,6 +56,14 @@
             </div>
         </div>
 
+        <!-- Stamina Bar -->
+        <div id="staminaContainer">
+            <div id="staminaLabel">Stamina</div>
+            <div id="staminaBar">
+                <div id="staminaFill"></div>
+            </div>
+        </div>
+
         <!-- Inventory -->
         <div id="inventoryLabel">Inventory</div>
         <div id="inventorySlots">
@@ -59,7 +75,7 @@
 
     <div id="controls">
         <div>Walk over items to pick up</div>
-        <div>Q - Attack zombies (300 damage)</div>
+        <div>Q - Attack zombies (1 sec cooldown)</div>
         <div>1, 2, 3 - Use inventory items</div>
     </div>
 </div>
@@ -72,7 +88,7 @@
 <!-- LittleJS Engine -->
 <script src="https://cdn.jsdelivr.net/npm/littlejsengine@1.14.19/dist/littlejs.min.js"></script>
 
-<!-- Game Scripts - ORDER MATTERS! -->
+<!-- Game Scripts -->
 <script src="scripts/config.js"></script>
 <script src="scripts/base-item.js"></script>
 <script src="scripts/health-item.js"></script>

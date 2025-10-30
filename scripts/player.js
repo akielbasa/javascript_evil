@@ -17,13 +17,25 @@ const PLAYER_CONFIG = {
     ATTACK_DAMAGE: 300,
     ATTACK_RANGE: 60,
     ATTACK_DURATION: 300, // milliseconds
-    ATTACK_COOLDOWN: 500, // milliseconds
+    ATTACK_COOLDOWN: 1000, // 1 second cooldown
     NUDGE_DISTANCE: 8, // pixels to nudge right during attack
+
+    // Stamina settings
+    MAX_STAMINA: 100,
+    STAMINA_REGEN_RATE: 100, // Regenerate 100 stamina per second (full bar in 1 second)
 
     // Health bar colors
     HEALTH_COLORS: {
         DEEP_GREEN: '#006400',
         RED: '#CC0000'
+    },
+
+    // Stamina bar colors
+    STAMINA_COLORS: {
+        FULL: '#FFD700',      // Gold when full
+        HIGH: '#FFA500',      // Orange when high
+        MEDIUM: '#FF8C00',    // Dark orange when medium
+        LOW: '#FF6347'        // Red when low
     },
 
     // Effects
@@ -41,6 +53,11 @@ class Player extends EngineObject {
         this.health = PLAYER_CONFIG.MAX_HEALTH;
         this.baseSpeed = PLAYER_CONFIG.BASE_SPEED;
         this.currentSpeed = this.baseSpeed;
+
+        // Stamina system
+        this.maxStamina = PLAYER_CONFIG.MAX_STAMINA;
+        this.stamina = PLAYER_CONFIG.MAX_STAMINA;
+        this.staminaRegenRate = PLAYER_CONFIG.STAMINA_REGEN_RATE;
 
         // Combat state
         this.isAttacking = false;
@@ -68,6 +85,8 @@ class Player extends EngineObject {
         DOM.speedDiv = document.getElementById('speed');
         DOM.healthBar = document.getElementById('healthBar');
         DOM.healthFill = document.getElementById('healthFill');
+        DOM.staminaBar = document.getElementById('staminaBar');
+        DOM.staminaFill = document.getElementById('staminaFill');
     }
 
     updateMovementSpeed() {
@@ -80,18 +99,37 @@ class Player extends EngineObject {
         }
     }
 
+    updateStamina() {
+        if (this.isDead) return;
+
+        // Regenerate stamina when not attacking
+        if (!this.isAttacking && this.stamina < this.maxStamina) {
+            const regenAmount = this.staminaRegenRate * timeDelta;
+            this.stamina = Math.min(this.maxStamina, this.stamina + regenAmount);
+            this.updateStaminaBar();
+        }
+    }
+
     canAttack() {
-        const currentTime = Date.now();
-        return !this.isDead && !this.isAttacking &&
-            (currentTime - this.lastAttackTime >= PLAYER_CONFIG.ATTACK_COOLDOWN);
+        // Can attack if stamina is full (or almost full to avoid precision issues)
+        return !this.isDead && !this.isAttacking && this.stamina >= this.maxStamina - 1;
     }
 
     attack() {
-        if (!this.canAttack()) return false;
+        if (!this.canAttack()) {
+            if (this.stamina < this.maxStamina - 1) {
+                console.log('⚡ Not enough stamina to attack!');
+            }
+            return false;
+        }
 
         this.isAttacking = true;
         this.isInvulnerable = true;
         this.lastAttackTime = Date.now();
+
+        // Consume all stamina
+        this.stamina = 0;
+        this.updateStaminaBar();
 
         // Store original position for nudging
         this.originalPosition = { x: this.pos.x, y: this.pos.y };
@@ -150,7 +188,7 @@ class Player extends EngineObject {
             DOM.playerDiv.classList.remove('attacking');
         }
 
-        console.log('✅ Attack finished');
+        console.log('✅ Attack finished - stamina regenerating');
     }
 
     takeDamage(amount) {
@@ -274,11 +312,33 @@ class Player extends EngineObject {
         }
     }
 
+    getStaminaColor() {
+        const staminaPercent = this.stamina / this.maxStamina;
+
+        if (staminaPercent >= 0.9) {
+            return PLAYER_CONFIG.STAMINA_COLORS.FULL;
+        } else if (staminaPercent >= 0.6) {
+            return PLAYER_CONFIG.STAMINA_COLORS.HIGH;
+        } else if (staminaPercent >= 0.3) {
+            return PLAYER_CONFIG.STAMINA_COLORS.MEDIUM;
+        } else {
+            return PLAYER_CONFIG.STAMINA_COLORS.LOW;
+        }
+    }
+
     updateHealthBar() {
         if (DOM.healthBar && DOM.healthFill) {
             const healthPercent = (this.health / this.maxHealth) * 100;
             DOM.healthFill.style.width = healthPercent + '%';
             DOM.healthFill.style.backgroundColor = this.getHealthColor();
+        }
+    }
+
+    updateStaminaBar() {
+        if (DOM.staminaBar && DOM.staminaFill) {
+            const staminaPercent = (this.stamina / this.maxStamina) * 100;
+            DOM.staminaFill.style.width = staminaPercent + '%';
+            DOM.staminaFill.style.backgroundColor = this.getStaminaColor();
         }
     }
 
@@ -342,6 +402,9 @@ class Player extends EngineObject {
     update() {
         if (this.isDead) return;
 
+        // Update stamina regeneration
+        this.updateStamina();
+
         const moveVector = this.handleInput();
 
         if (moveVector.x !== 0 || moveVector.y !== 0) {
@@ -368,6 +431,9 @@ class Player extends EngineObject {
         let status = [];
         if (this.isAttacking) status.push('ATTACKING');
         if (this.isInvulnerable) status.push('INVULNERABLE');
+        if (this.stamina < this.maxStamina - 1) {
+            status.push(`STAMINA: ${Math.floor(this.stamina)}%`);
+        }
         return status.length > 0 ? ` [${status.join(', ')}]` : '';
     }
 
@@ -405,6 +471,7 @@ class Player extends EngineObject {
     reset(pos) {
         this.pos = pos;
         this.health = this.maxHealth;
+        this.stamina = this.maxStamina;
         this.isDead = false;
         this.canMove = true;
         this.isAttacking = false;
@@ -413,6 +480,7 @@ class Player extends EngineObject {
 
         this.updateMovementSpeed();
         this.updateHealthBar();
+        this.updateStaminaBar();
 
         this.inventory = new Inventory();
 

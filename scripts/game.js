@@ -15,6 +15,14 @@ let gameStats = {
 // Game state
 let gameRunning = false;
 
+// Helper function for enemies to get player position
+window.getPlayerPosition = function() {
+    if (player && !player.isDead) {
+        return { x: player.pos.x, y: player.pos.y };
+    }
+    return null;
+};
+
 // Victory functionality
 function showVictoryScreen() {
     const victoryScreen = document.getElementById('victoryScreen');
@@ -222,7 +230,8 @@ function gameInit() {
 
     gameRunning = true;
 
-    console.log('🎮 Game initialized with combat system!');
+    console.log('🎮 Game initialized with moving zombies!');
+    console.log('🧟 Zombies will move at 1/3 player speed (100 pixels/second)');
 }
 
 function hideCanvases() {
@@ -238,11 +247,15 @@ function hideCanvases() {
 function gameUpdate() {
     if (!gameRunning) return;
 
+    // Check for item pickups
     if (player && itemManager) {
         itemManager.checkPickups(player.pos, player.inventory);
     }
 
-    if (player && enemyManager && !player.isInvulnerable) {
+    // Check for enemy collisions - IMPORTANT: Check invulnerability correctly
+    if (player && enemyManager) {
+        // Only prevent damage if player is currently invulnerable (during attack)
+        // Don't check isInvulnerable here - let the enemy's damage cooldown handle it
         const oldHealth = player.health;
         enemyManager.checkCollisions(player.pos, player);
         const damageTaken = oldHealth - player.health;
@@ -251,6 +264,7 @@ function gameUpdate() {
         }
     }
 
+    // Update enemies
     if (enemyManager) {
         enemyManager.updateEnemies();
     }
@@ -277,7 +291,7 @@ function gameRenderPost() {
 }
 
 function gameStart() {
-    console.log('🚀 Game started with combat and victory system!');
+    console.log('🚀 Game started with moving zombies!');
 }
 
 // Utility functions
@@ -331,10 +345,12 @@ function getCurrentGameStats() {
         player: {
             health: player ? player.health : 0,
             maxHealth: player ? player.maxHealth : 0,
+            position: player ? { x: player.pos.x, y: player.pos.y } : null,
             isDead: player ? player.isDead : false,
             isAttacking: player ? player.isAttacking : false,
             isInvulnerable: player ? player.isInvulnerable : false
         },
+        enemies: enemyManager ? enemyManager.getStats() : null,
         gameStats: {
             ...gameStats,
             survivalTime: survivalTime,

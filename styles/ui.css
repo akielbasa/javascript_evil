@@ -1,0 +1,150 @@
+/* Simplified UI - Top Left */
+#ui {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: white;
+    font-size: 14px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    border-radius: 5px;
+    min-width: 200px;
+}
+
+/* Combined Inventory and Health UI - Top Right */
+#inventoryUI {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.9);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    min-width: 200px;
+}
+
+#inventoryLabel {
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Health Bar */
+#healthContainer {
+    margin-bottom: 15px;
+}
+
+#healthLabel {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: white;
+    font-size: 12px;
+    text-align: center;
+}
+
+#healthBar {
+    width: 180px;
+    height: 16px;
+    background-color: #333;
+    border: 2px solid #555;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    margin: 0 auto;
+}
+
+#healthFill {
+    height: 100%;
+    width: 100%;
+    background-color: #006400;
+    transition: width 0.3s ease, background-color 0.3s ease;
+    border-radius: 6px;
+}
+
+#healthBar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255,255,255,0.1) 50%, 
+        transparent 100%);
+    pointer-events: none;
+}
+
+/* Stamina Bar */
+#staminaContainer {
+    margin-bottom: 15px;
+}
+
+#staminaLabel {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: white;
+    font-size: 12px;
+    text-align: center;
+}
+
+#staminaBar {
+    width: 180px;
+    height: 12px;
+    background-color: #333;
+    border: 2px solid #555;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    margin: 0 auto;
+}
+
+#staminaFill {
+    height: 100%;
+    width: 100%;
+    background-color: #FFD700;
+    transition: width 0.1s linear, background-color 0.2s ease;
+    border-radius: 4px;
+}
+
+#staminaBar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255,255,255,0.2) 50%, 
+        transparent 100%);
+    pointer-events: none;
+}
+
+/* Stamina bar pulsing effect when full */
+#staminaFill[style*="width: 100%"] {
+    animation: staminaFullPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes staminaFullPulse {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+    }
+}
+
+/* Controls Info */
+#controls {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    color: #aaa;
+    font-size: 12px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+}

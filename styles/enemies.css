@@ -1,0 +1,138 @@
+/* Base Enemy Styling */
+.enemy {
+    position: absolute;
+    border: 2px solid #FF0000;
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 15;
+}
+
+.enemy::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.enemy:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 18px rgba(255, 0, 0, 0.8);
+}
+
+.enemy.attacking {
+    animation: attackFlash 0.3s ease-out;
+    transform: scale(1.2);
+}
+
+@keyframes attackFlash {
+    0% {
+        box-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
+        transform: scale(1.0);
+    }
+    50% {
+        box-shadow: 0 0 25px rgba(255, 0, 0, 1.0);
+        transform: scale(1.2);
+        border-color: #FFFF00;
+    }
+    100% {
+        box-shadow: 0 0 18px rgba(255, 0, 0, 0.8);
+        transform: scale(1.2);
+    }
+}
+
+.enemy.hurt {
+    animation: hurtFlash 0.2s ease-out;
+}
+
+@keyframes hurtFlash {
+    0% {
+        filter: brightness(1.0);
+    }
+    50% {
+        filter: brightness(2.0) hue-rotate(180deg);
+    }
+    100% {
+        filter: brightness(1.0);
+    }
+}
+
+.enemy.low-health {
+    animation: lowHealthPulse 1s ease-in-out infinite;
+}
+
+@keyframes lowHealthPulse {
+    0%, 100% {
+        opacity: 1.0;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+.enemy.dying {
+    animation: deathAnimation 0.5s ease-out forwards;
+}
+
+@keyframes deathAnimation {
+    0% {
+        transform: scale(1.0) rotate(0deg);
+        opacity: 1.0;
+    }
+    50% {
+        transform: scale(1.3) rotate(180deg);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(0.1) rotate(360deg);
+        opacity: 0.0;
+    }
+}
+
+/* Zombie Enemy Specific Styling */
+.zombie-enemy {
+    width: 32px;
+    height: 32px;
+    background: radial-gradient(circle, #FF6666 0%, #FF4444 70%, #CC0000 100%);
+    transition: none;
+    animation: zombieShamble 2s ease-in-out infinite;
+}
+
+.zombie-enemy::after {
+    content: 'Z';
+    font-size: 18px;
+}
+
+.zombie-enemy.low-health {
+    animation: zombieLowHealthPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes zombieLowHealthPulse {
+    0%, 100% {
+        opacity: 1.0;
+        box-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
+    }
+    50% {
+        opacity: 0.6;
+        box-shadow: 0 0 8px rgba(255, 0, 0, 0.4);
+    }
+}
+
+@keyframes zombieShamble {
+    0%, 100% {
+        transform: scale(1.0) rotate(0deg);
+    }
+    25% {
+        transform: scale(1.02) rotate(-1deg);
+    }
+    50% {
+        transform: scale(1.0) rotate(0deg);
+    }
+    75% {
+        transform: scale(1.02) rotate(1deg);
+    }
+}
